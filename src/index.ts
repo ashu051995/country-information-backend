@@ -7,18 +7,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {WriteStream} from 'fs';
 
+
+const cors = require('cors')
+
+
 import { unCoughtErrorHandler } from "./handlers/errorHandler";
 
-// const app: Express = express();
-// const port = process.env.PORT || 3000;
-
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Express + TypeScript Server");
-// });
-
-// app.listen(port, () => {
-//   console.log(`[server]: Server is running at http://localhost:${port}`);
-// })
+let corsOptions = {
+  origin : ['http://localhost:5173'],
+}
 
 export default class Server {
   constructor(app:Application){
@@ -30,6 +27,7 @@ export default class Server {
       path.join(__dirname,'./log/access.log'),
       {flags:'a'}
     );
+    app.use(cors(corsOptions));
     // app.use(morgan('combined', { stream: accessLogStream }));
     app.use(urlencoded({extended:true}))
     app.use(json());
