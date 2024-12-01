@@ -54,17 +54,19 @@ export default class CountriesCtrl {
     }
 
     async searchCountries (req:Request,res:Response,next:NextFunction) {
+      // this api is not completed totaly it is pending for other params exclude name 
       
-      
-      const  page =req.query.index||0;
-      const limit = req.query.limit||10;
-        const  name =req.query.name || "";
+      const  page =req?.query?.index||0;
+      const limit = req?.query?.limit||10;
+        const  name =req?.query?.name || "";
+        const capital =req?.query?.capital ||"";
+        const region = req?.query?.region ||"";
+        const timeZone = req?.query?.timeZone ||undefined
         
         try {
           
         
-            const response = await axios.get(countiesApiLink);
-            
+            const response = await axios.get(countiesApiLink);            
             const filterResponse = response?.data?.filter(obj=>{
               let returnObj:boolean=false
               if(obj?.name?.common?.toLowerCase()?.includes(name)){
