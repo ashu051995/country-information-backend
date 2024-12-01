@@ -18,10 +18,11 @@ class CountriesRoutes {
     }
 
     intializeRoutes() {
-        this.router.route('/').get(this.countriesCtrl.getAllCountries)
+        this.router.route('/country-search').get(this.countriesCtrl.searchCountries)
         this.router.route('/:code').get(this.countriesCtrl.getCountryByCode)
         this.router.route('/region/:region').get(this.countriesCtrl.getCountryRegionbyRegionCode)
-        this.router.route('/search').get(this.countriesCtrl.searchCountries)
+        this.router.route('/').get(this.countriesCtrl.getAllCountries)
+        
         
     }
 }
