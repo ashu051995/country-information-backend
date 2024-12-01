@@ -6,9 +6,8 @@ import Routes from "./routes";
 import * as fs from 'fs';
 import * as path from 'path';
 import {WriteStream} from 'fs';
-
-
-const cors = require('cors')
+import * as apicache from "apicache"
+import * as cors from "cors"
 
 
 import { unCoughtErrorHandler } from "./handlers/errorHandler";
@@ -16,6 +15,10 @@ import { unCoughtErrorHandler } from "./handlers/errorHandler";
 let corsOptions = {
   origin : ['http://localhost:5173'],
 }
+
+let cache = apicache.middleware
+
+
 
 export default class Server {
   constructor(app:Application){
@@ -28,6 +31,7 @@ export default class Server {
       {flags:'a'}
     );
     app.use(cors(corsOptions));
+    app.use(cache('1 hour'))
     // app.use(morgan('combined', { stream: accessLogStream }));
     app.use(urlencoded({extended:true}))
     app.use(json());
