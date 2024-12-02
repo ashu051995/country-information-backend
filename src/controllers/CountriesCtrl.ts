@@ -59,26 +59,34 @@ export default class CountriesCtrl {
       const  page =req.query.index||0;
       const limit = req.query.limit||10;
         const  name =req.query.name || "";
+        const type = req.query.searchType
         
         try {
           
-        
+          console.log("type",type)
             const response = await axios.get(countiesApiLink);
-            
             const filterResponse = response?.data?.filter(obj=>{
-              let returnObj:boolean=false
-              if(obj?.name?.common?.toLowerCase()?.includes(name)){
-                returnObj=true
-              }
-              // if(obj?.capital[0]?.toLowerCase()?.includes(name)) {
-              //   returnObj=true
-              // }
-              // if(obj?.region?.toLowerCase()?.includes(name)) {
-              //   returnObj=true
-              // }
-              return returnObj?obj:undefined
-            }) ;
+              switch (type) {
+                case 'name':
+                  if(obj?.name?.common?.toLowerCase()?.includes(name)){
+                     return obj;
+                  }
+                  break;
+              // case'capital':
+              //  if(obj?.capital[0]?.toLowerCase()?.includes(name)) {
 
+              //   return obj;
+              // }
+              break;
+              case'region':
+               if(obj?.region?.toLowerCase()?.includes(name)) {
+                return obj;
+              }
+                
+              }
+
+            }) ;
+            console.log("filterResponse",filterResponse)
             const paginatedResponse = _.chunk(filterResponse,limit)[page]
             const data =paginatedResponse?.map(obj=>({name:obj.name,code:obj.cca2,region:obj.region,capital:obj.capital,population:obj.population,timezones:obj.timezones,flags:obj.flags,continents:obj.continents}))
             res.json(data);
